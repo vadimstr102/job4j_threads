@@ -1,8 +1,6 @@
 package ru.job4j.concurrent;
 
 public class ConsoleProgress implements Runnable {
-    private String symbol = "/";
-
     public static void main(String[] args) throws InterruptedException {
         Thread progress = new Thread(new ConsoleProgress());
         progress.start();
@@ -12,24 +10,18 @@ public class ConsoleProgress implements Runnable {
 
     @Override
     public void run() {
+        String[] process = {"\\", "|", "/"};
+        int index = 0;
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 break;
             }
-            System.out.print("\rLoading... " + process());
+            System.out.print("\rLoading... " + process[index++]);
+            if (index == process.length) {
+                index = 0;
+            }
         }
-    }
-
-    private String process() {
-        if (symbol.equals("/")) {
-            symbol = "\\";
-        } else if (symbol.equals("\\")) {
-            symbol = "|";
-        } else {
-            symbol = "/";
-        }
-        return symbol;
     }
 }
